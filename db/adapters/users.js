@@ -79,3 +79,10 @@ async function getUserById(userId) {
     throw error;
   }
 }
+
+module.exports = {
+  createUser,
+  getUser,
+  getUserById,
+  getUserByUsername
+}; 
