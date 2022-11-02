@@ -1,26 +1,43 @@
-const client = require("./client");
+// const client = require("./client");
+const { Client } = require("pg");
+const { createRoutine } = require("./adapters/routines");
+const client = new Client("postgres://localhost:5432/fitnessTrackerBackend");
+const {
+  createUser,
+  getUser,
+  getUserById,
+  getUserByUsername,
+} = require("./adapters/users");
+
+const {
+  users,
+  activities,
+  routines,
+  routine_activities,
+} = require("./seedData.js");
 
 const dropTables = async () => {
-    console.log("...dropping tables");
-    await client.query(`
-      DROP TABLE IF EXISTS activities;
-      DROP TABLE IF EXISTS routine-activities;
+  console.log("...dropping tables");
+  await client.query(`
+  DROP TABLE IF EXISTS routine_activities;    
+  DROP TABLE IF EXISTS activities;
       DROP TABLE IF EXISTS routines;
       DROP TABLE IF EXISTS users; 
+      
     `);
-}
+};
 
 const createTables = async () => {
-    console.log(`...creating users table`);
-    await client.query(`
+  console.log(`...creating users table`);
+  await client.query(`
         CREATE TABLE users (
           id SERIAL PRIMARY KEY,
           username VARCHAR (255) UNIQUE NOT NULL,
           password VARCHAR (255) NOT NULL
         );
       `);
-
-    await client.query(`
+  console.log(`...creating routine table`);
+  await client.query(`
     CREATE TABLE routines (
         id SERIAL PRIMARY KEY,
         creator_id INTEGER REFERENCES users(id),
@@ -30,35 +47,50 @@ const createTables = async () => {
     );
     `);
 
-    await client.query(`
-    CREATE TABLE routine-activities (
+  console.log(`...creating act table`);
+  await client.query(`
+    CREATE TABLE activities (  
         id	SERIAL	PRIMARY KEY,
-        routine_id	INTEGER	REFERENCES routines ( id ),
-        activity_id	INTEGER	REFERENCES activities ( id ),
+        name	VARCHAR(255)	UNIQUE NOT NULL,
+        description	TEXT	NOT NULL
+    );
+    `);
+  console.log(`...creating routine_act table`);
+  await client.query(`
+    CREATE TABLE routine_activities(
+      id	SERIAL	PRIMARY KEY,
+      routine_id	INTEGER	REFERENCES routines ( id ),  
+      activity_id	INTEGER	REFERENCES activities ( id ),
         duration	INTEGER,	
         count	INTEGER
     );
     `);
+};
 
-    await client.query(`
-    CREATE TABLE activities (  
-        id	SERIAL	PRIMARY KEY
-        name	VARCHAR(255)	UNIQUE NOT NULL
-        description	TEXT	NOT NULL
-    );
-    `);
-}
+const seedDb = async () => {
+  console.log(`...seeding users`);
+  for (const user of users) {
+    console.log("we are line 73");
+    await createUser(user);
+    console.log("we are line 75");
+  }
+  console.log(`...seeding routines`);
+  for (const routine of routines) {
+    await createRoutine(routine);
+  }
+};
 
 const rebuildDb = async () => {
-    client.connect();
-    try {
-        await dropTables();
-        await createTables();
-    } catch (error) {
+  client.connect();
+  try {
+    await dropTables();
+    await createTables();
+    await seedDb();
+  } catch (error) {
     console.error(error);
   } finally {
     client.end();
-}
+  }
 };
 
 rebuildDb();
