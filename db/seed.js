@@ -6,6 +6,8 @@ const {
   getUserById,
   getUserByUsername,
 } = require("./adapters/users");
+const { createActivity } = require("./adapters/activities");
+const { addActivityToRoutine } = require("./adapters/routine_activities");
 
 const {
   users,
@@ -68,18 +70,25 @@ const createTables = async () => {
 const seedDb = async () => {
   console.log(`...seeding users`);
   for (const user of users) {
-    console.log("we are line 73");
     await createUser(user);
-    console.log("we are line 75");
   }
   console.log(`...seeding routines`);
   for (const routine of routines) {
-    console.log("line 77")
     await createRoutine(routine);
-    console.log("line 79")
+    console.log("seeded routines");
+  }
+  console.log("...seeding activities", activities);
+  for (const activity of activities) {
+    await createActivity(activity);
+    console.log("seeded activities");
+  }
+
+  console.log("...seeding rout_acts", routine_activities);
+  for (const routine_activity of routine_activities) {
+    await addActivityToRoutine(routine_activity);
+    console.log("seeded rout_acts");
   }
 };
-
 const rebuildDb = async () => {
   client.connect();
   try {
