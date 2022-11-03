@@ -1,4 +1,4 @@
-const client = require("../client")
+const client = require("../client");
 
 async function createUser({ username, password }) {
   try {
@@ -28,7 +28,7 @@ async function getUser(username, password) {
       `
           SELECT *
           FROM users
-          WHERE username=$1 & password=$2;
+          WHERE username=$1 AND password=$2;
         `,
       [username, password]
     );
@@ -47,7 +47,7 @@ async function getUserByUsername(username) {
       `
         SELECT *
         FROM users
-        WHERE username=$1;
+        WHERE username='$1';
       `,
       [username]
     );
@@ -63,7 +63,7 @@ async function getUserById(userId) {
     const {
       rows: [user],
     } = await client.query(`
-        SELECT id, username, 
+        SELECT id, username 
         FROM users
         WHERE id=${userId}
       `);
