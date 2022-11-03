@@ -1,6 +1,4 @@
-const { Client } = require("pg");
-
-const client = new Client("postgres://localhost:5432/fitnessTrackerBackend");
+const client = require("../client")
 
 async function createUser({ username, password }) {
   try {
