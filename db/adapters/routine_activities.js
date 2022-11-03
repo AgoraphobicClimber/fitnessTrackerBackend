@@ -60,11 +60,10 @@ async function updateRoutineActivity(routineActivityId, count, duration) {
       rows: [updatedRoutAct],
     } = await client.query(
       `
-          UPDATE routine_actvites
-          SET count = $2
-          SET = $3  
-          WHERE routine_activities.id = $1; 
-          RETURNING count, duration  
+      UPDATE routine_activities
+      SET count = $2, duration = $3
+      WHERE routine_activities.id = $1
+      RETURNING count, duration  
           `,
       [routineId, isPublic, name, goal]
     );
@@ -80,9 +79,10 @@ async function destoryRoutine(routine_activityId) {
       rows: [deletedRoutineActivity],
     } = await client.query(
       `
-              DELETE FROM routine
-              WHERE routine_activity.id = $1
-              RETURNING *
+      DELETE FROM routine_activities
+      WHERE routine_activities.id = $1
+      RETURNING *
+
               `,
       [routine_activityId]
     );

@@ -232,25 +232,27 @@ async function getPublicRoutineByActivity(activityId) {
     } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
-      CASE WHEN ra."routine_id" is NULL THEN '[]' :json
+      CASE WHEN ra."routine_id" is NULL THEN '[]' ::json
       ELSE
       JSON_AGG(
-          'id'. activities.id,
+          JSON_BUILD_OBJECT(
+          'id', activities.id,
           'name', activities.name,
           'description', activities.description,
           'count', ra.count,
           'duration', ra.duration
       )
      ) END AS activities
-     FROM routines
+     FROM routines 
      LEFT JOIN routine_activities AS ra
      ON routines.id=ra.routine_id
      LEFT JOIN activities
      ON activities.id=ra.activity_id
      JOIN users
      ON routines.creator_id=users.id
-     WHERE activities.id=$1 AND routines.is_public = true
-     GROUP BY routines.id, ra.routine_id, users.username
+     WHERE activities.id = 1 AND routines.is_public = true
+     GROUP BY routines.id, ra.routine_id, users.username;
+
             `,
       [activityId]
     );
@@ -266,10 +268,10 @@ async function updateRoutine(routineId, isPublic, name, goal) {
       rows: [updatedRoutine],
     } = await client.query(
       `
-        UPDATE routines
-        SET isPublic = $2 AND name = $3 AND goal = $4; 
-        WHERE routines.id = $1; 
-        RETURNING isPublic, name, goal  
+      UPDATE routines
+      SET is_public = $2, name = $3, goal = $4
+      WHERE routines.id = $1
+      RETURNING is_public, name, goal   
         `,
       [routineId, isPublic, name, goal]
     );
@@ -283,8 +285,8 @@ async function destoryRoutine(routineId) {
   try {
     await client.query(
       `
-            DELETE FROM routine_activites
-            WHERE routine_activites.routine_id = $1
+            DELETE FROM routine_activities
+            WHERE routine_activities.routine_id = $1
             RETURNING *
             `,
       [routineId]

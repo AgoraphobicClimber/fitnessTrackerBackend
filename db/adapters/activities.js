@@ -60,10 +60,10 @@ async function updateActivity(activityId, name, description) {
       rows: [updateActivity],
     } = await client.query(
       `
-            UPDATE activities
-            SET name = $2 AND description = $3
-            WHERE activities.id = $1
-            RETURNING name, description
+      UPDATE activities
+      SET name = $2 , description = $3
+      WHERE activities.id = $1
+      RETURNING name, description
             `,
       [activityId, name, description]
     );
