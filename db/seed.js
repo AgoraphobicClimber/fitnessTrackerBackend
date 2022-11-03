@@ -1,7 +1,5 @@
-// const client = require("./client");
-const { Client } = require("pg");
+const client = require("./client");
 const { createRoutine } = require("./adapters/routines");
-const client = new Client("postgres://localhost:5432/fitnessTrackerBackend");
 const {
   createUser,
   getUser,
@@ -76,7 +74,9 @@ const seedDb = async () => {
   }
   console.log(`...seeding routines`);
   for (const routine of routines) {
+    console.log("line 77")
     await createRoutine(routine);
+    console.log("line 79")
   }
 };
 
