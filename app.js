@@ -1,18 +1,18 @@
 const express = require("express");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser")
-const { authRequired } = require ("./routes/index")
+const cookieParser = require("cookie-parser");
+const authRequired = require("./routes/utils");
 const { COOKIE_SECRET } = process.env;
 
-const app = express();
-
 require("dotenv").config();
-
+const app = express();
+const client = require("./db/client");
+client.connect();
 app.use(morgan("dev"));
 app.use(cookieParser(COOKIE_SECRET));
 app.use(express.json());
 
-app.use("/api", require("./api"));
+app.use("/routes", require("./routes"));
 
 app.get("/test", authRequired, (req, res, next) => {
   res.send("You are authorized");
@@ -27,4 +27,3 @@ app.use((error, req, res, next) => {
 });
 
 module.exports = app;
-

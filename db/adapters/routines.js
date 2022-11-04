@@ -309,4 +309,13 @@ async function destoryRoutine(routineId) {
   }
 }
 
-module.exports = { createRoutine, getAllRoutines, getPublicRoutinesByUser, updateRoutine, getAllRoutinesByUser, getRoutineById, destoryRoutine };
+module.exports = {
+  createRoutine,
+  getPublicRoutineByActivity,
+  getAllRoutines,
+  getPublicRoutinesByUser,
+  updateRoutine,
+  getAllRoutinesByUser,
+  getRoutineById,
+  destoryRoutine,
+};
