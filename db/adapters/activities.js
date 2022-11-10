@@ -42,13 +42,13 @@ async function getActivityById(activityId) {
 async function getAllActivities() {
   try {
     const {
-      rows: [activity],
+      rows,
     } = await client.query(
       `
-            SELECT * FROM activites
+            SELECT * FROM activities
             `
     );
-    return activity;
+    return rows;
   } catch (error) {
     throw error;
   }
