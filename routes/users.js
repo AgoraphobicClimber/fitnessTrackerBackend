@@ -1,20 +1,21 @@
-const express = require("express");
+
 const bcrypt = require("bcrypt");
-const authRouter = require("express").Router();
+const usersRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
-const { User } = require("../db/adapters/users");
-const { Routines } = require("../db/adapters/routines");
+const { createUser, getUserByUsername } = require("../db/adapters/users");
+const { getPublicRoutinesByUser } = require("../db/adapters/routines");
 const SALT_ROUNDS = 10;
 const { JWT_SECRET } = process.env;
-const authRequired = require("./utils");
+const { authRequired } = require("./utils");
 
-authRouter.post("/register", async (req, res, next) => {
+usersRouter.post("/register", async (req, res, next) => {
   try {
     const { username, password } = req.body;
+    console.log("test log", username, password)
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const user = await User.createUser({ username, password: hashedPassword });
-
+    const user = await createUser({ username, password: hashedPassword });
+console.log(user)
     delete user.password;
 
     const token = jwt.sign(user, JWT_SECRET);
@@ -31,11 +32,11 @@ authRouter.post("/register", async (req, res, next) => {
   }
 });
 
-authRouter.post("/login", async (req, res, next) => {
+usersRouter.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
     console.log({ username, password });
-    const user = await User.getUserByUsername(username);
+    const user = await getUserByUsername(username);
     console.log(user);
     const validPassword = await bcrypt.compare(password, user.password);
 
@@ -59,7 +60,7 @@ authRouter.post("/login", async (req, res, next) => {
   }
 });
 
-authRouter.get("/me", authRequired, async (req, res, next) => {
+usersRouter.get("/me", authRequired, async (req, res, next) => {
   try {
     res.send(req.user);
   } catch (error) {
@@ -67,10 +68,10 @@ authRouter.get("/me", authRequired, async (req, res, next) => {
   }
 });
 
-authRouter.get("/users/:username/routines", async (req, res, next) => {
+usersRouter.get("/:username/routines", async (req, res, next) => {
   try {
     const { username } = req.params;
-    const routines = Routines.getPublicRoutinesByUser(username);
+    const routines = await getPublicRoutinesByUser(username);
 
     res.send(routines);
   } catch (error) {
@@ -78,4 +79,4 @@ authRouter.get("/users/:username/routines", async (req, res, next) => {
   }
 });
 
-module.exports = authRouter;
+module.exports = usersRouter;

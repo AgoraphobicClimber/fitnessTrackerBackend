@@ -1,23 +1,21 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
+
+
 const activityRouter = require("express").Router();
-const { Activities } = require("../db/adapters/activities");
-const { Routine } = require("../db/adapters/routines");
-const { JWT_SECRET } = process.env;
-const { authRequired } = require("./index");
-const SALT_ROUNDS = 10;
+const { getAllActivities, createActivity, getActivityById, updateActivity } = require("../db/adapters/activities")
+const { getPublicRoutineByActivity } = require("../db/adapters/routines");
+const { authRequired } = require("./utils");
 
-activityRouter.get("/activities", async (req, res, next) => {
+activityRouter.get("/", async (req, res, next) => {
   try {
-    const allActivities = await Activities.getAllActivities();
+    const allActivities = await getAllActivities();
 
-    res.send({ activity: allActivities });
+    res.send(allActivities);
   } catch (error) {
     next(error);
   }
 });
 
-activityRouter.post("/activities", authRequired, async (req, res, next) => {
+activityRouter.post("/", authRequired, async (req, res, next) => {
   const { id, name, description } = req.body;
 
   const activityData = {
@@ -27,7 +25,7 @@ activityRouter.post("/activities", authRequired, async (req, res, next) => {
   };
 
   try {
-    const newActivity = Activities.createActivity(activityData);
+    const newActivity = createActivity(activityData);
     if (newActivity) {
       res.send({
         activity: newActivity,
@@ -44,7 +42,7 @@ activityRouter.post("/activities", authRequired, async (req, res, next) => {
 });
 
 activityRouter.patch(
-  "/activities/:activityId",
+  "/:activityId",
   authRequired,
   async (req, res, next) => {
     const { activityId } = req.params;
@@ -60,10 +58,10 @@ activityRouter.patch(
     }
 
     try {
-      const originalActivity = Activities.getActivityById(activityId);
+      const originalActivity = getActivityById(activityId);
 
       if (originalActivity) {
-        const updatedActivity = Activities.updateActivity(
+        const updatedActivity = updateActivity(
           activityId,
           updateFields
         );
@@ -81,18 +79,20 @@ activityRouter.patch(
 );
 
 activityRouter.get(
-  "/activities/:activityId/routines",
+  "/:activityId/routines",
   async (req, res, next) => {
     const { activityId } = req.params;
 
     try {
-      const routinesWithActivity = await Routine.getPublicRoutineByActivity(
+      const routinesWithActivity = await getPublicRoutineByActivity(
         activityId
       );
 
-      res.send({ routine: routinesWithActivity });
+      res.send(routinesWithActivity);
     } catch (error) {
       next(error);
     }
   }
 );
+
+module.exports = activityRouter;

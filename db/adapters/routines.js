@@ -82,7 +82,7 @@ async function getRoutineWithoutActivities() {
 async function getAllRoutines() {
   try {
     const {
-      rows: [routine],
+      rows,
     } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
@@ -109,7 +109,7 @@ async function getAllRoutines() {
             `
     );
 
-    return routine;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -118,7 +118,7 @@ async function getAllRoutines() {
 async function getAllPublicRoutines() {
   try {
     const {
-      rows: [routine],
+      rows,
     } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
@@ -145,7 +145,7 @@ async function getAllPublicRoutines() {
             `
     );
 
-    return routine;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -154,7 +154,7 @@ async function getAllPublicRoutines() {
 async function getAllRoutinesByUser(username) {
   try {
     const {
-      rows: [routine],
+      rows,
     } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
@@ -182,7 +182,7 @@ async function getAllRoutinesByUser(username) {
             `,
       [username]
     );
-    return routine;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -191,7 +191,7 @@ async function getAllRoutinesByUser(username) {
 async function getPublicRoutinesByUser(username) {
   try {
     const {
-      rows: [routine],
+      rows,
     } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
@@ -213,13 +213,13 @@ async function getPublicRoutinesByUser(username) {
         ON ra."activity_id" = activities.id
       JOIN users
         ON routines."creator_id" = users.id	
-        WHERE users.username='$1' AND routines.is_public = true
+        WHERE users.username=$1 AND routines.is_public = true
         GROUP BY routines.id, ra."routine_id", users.username
 
             `,
       [username]
     );
-    return routine;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -250,7 +250,7 @@ async function getPublicRoutineByActivity(activityId) {
      ON activities.id=ra.activity_id
      JOIN users
      ON routines.creator_id=users.id
-     WHERE activities.id = 1 AND routines.is_public = true
+     WHERE activities.id = $1 AND routines.is_public = true
      GROUP BY routines.id, ra.routine_id, users.username;
 
             `,
@@ -318,4 +318,5 @@ module.exports = {
   getAllRoutinesByUser,
   getRoutineById,
   destoryRoutine,
+  getAllPublicRoutines
 };

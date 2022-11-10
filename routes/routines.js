@@ -1,22 +1,20 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
+
 const routineRouter = require("express").Router();
-const { Routine, getRoutineById } = require("../db/adapters/routines");
-const { JWT_SECRET } = process.env;
-const { authRequired } = require("./index");
-const SALT_ROUNDS = 10;
+const { getRoutineById, getAllPublicRoutines, createRoutine, updateRoutine, destroyRoutine } = require("../db/adapters/routines");
+const { authRequired } = require("./utils");
 
-routineRouter.get("/routines", async (req, res, next) => {
+// GET /routes/routines
+routineRouter.get("/", async (req, res, next) => {
   try {
-    const allRoutines = await Routine.getAllPublicRoutines();
+    const allRoutines = await getAllPublicRoutines();
 
-    res.send({ routine: allRoutines });
+    res.send(allRoutines);
   } catch (error) {
     next(error);
   }
 });
 
-routineRouter.post("/routines", authRequired, async (req, res, next) => {
+routineRouter.post("/", authRequired, async (req, res, next) => {
   const { id } = req.user;
   const { is_public, name, goal } = req.body;
 
@@ -110,3 +108,5 @@ routineRouter.delete(
     }
   }
 );
+
+module.exports = routineRouter

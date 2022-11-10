@@ -6,6 +6,7 @@ const { Routine } = require("../db/adapters/routines");
 const {
   RoutineActivities,
   getRoutineActivityById,
+  destoryRoutineAct
 } = require("../db/adapters/routine_activities");
 const { JWT_SECRET } = process.env;
 const { authRequired } = require("./utils");
@@ -28,23 +29,53 @@ routine_activitiesRouter.post(
     const { activityId, count, duration } = req.body;
     const { routineId } = req.params;
     console.log("test");
-    // res.send(activityId, count, duration, routineId);
+    res.send(activityId, count, duration, routineId);
 
-    // try {
-    //   const newRoutineActivity = RoutineActivities.addActivityToRoutine(routineId, activityId, count, duration);
-    //   if ((routineId)&& (activityId)) {
-    //     res.send({
-    //       routineActivity: newRoutineActivity,
-    //     });
-    //   } else {
-    //     next({
-    //       name: "error",
-    //       message: "can't create activity!",
-    //     });
-    //   }
-    // } catch ({ name, message }) {
-    //   next({ name, message });
-    // }
+    try {
+      const newRoutineActivity = RoutineActivities.addActivityToRoutine(routineId, activityId, count, duration);
+      if ((routineId)&& (activityId)) {
+        res.send({
+          routineActivity: newRoutineActivity,
+        });
+      } else {
+        next({
+          name: "error",
+          message: "can't create activity!",
+        });
+      }
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
   }
 );
+
+routine_activitiesRouter.delete(
+  "/:routineActivityId",
+  async (req, res, next) => {
+    try {
+      const routineact = getRoutineActivityById(req.params.routineActivityId);
+
+      if (routineact.routine_id === req.user.id) {
+        const deletedRa = destoryRoutineAct();
+        res.send( { RoutineActivities: deletedRa } )
+      } else {
+        next(
+          RoutineActivities
+            ? {
+                name: "UnauthorizedUserError",
+                message: "You cannot delete a routine which is not yours",
+              }
+            : {
+                name: "RoutineNotFoundError",
+                message: "That routine does not exist",
+              }
+        );
+      }
+      }catch ({ name, message }) {
+        next({ name, message });
+      }
+    }
+)
+
+
 module.exports = routine_activitiesRouter;

@@ -73,7 +73,7 @@ async function updateRoutineActivity(routineActivityId, count, duration) {
   }
 }
 
-async function destoryRoutine(routine_activityId) {
+async function destoryRoutineAct(routine_activityId) {
   try {
     const {
       rows: [deletedRoutineActivity],
@@ -101,7 +101,7 @@ async function destoryRoutine(routine_activityId) {
 async function getRoutineActivitiesByRoutine(routineId) {
   try {
     const {
-      rows: [routineActs],
+      rows,
     } = await client.query(
       `
           SELECT * FROM routine_activities
@@ -121,7 +121,7 @@ async function getRoutineActivitiesByRoutine(routineId) {
       [routineId]
     );
 
-    return routineActs;
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -132,5 +132,5 @@ module.exports = {
   getRoutineActivityById,
   getRoutineActivitiesByRoutine,
   getRoutineActivityById,
-  destoryRoutine,
+  destoryRoutineAct,
 };

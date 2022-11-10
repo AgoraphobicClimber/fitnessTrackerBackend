@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const { JWT_SECRET } = process.env.JWT_SECRET;
+const { JWT_SECRET } = process.env
 
 const authRequired = (req, res, next) => {
   const token = req.signedCookies.token;
@@ -19,4 +18,4 @@ const authRequired = (req, res, next) => {
   next();
 };
 
-module.exports = authRequired;
+module.exports = { authRequired };
