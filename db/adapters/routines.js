@@ -27,13 +27,13 @@ async function getRoutineById(id) {
       rows: [routine],
     } = await client.query(
       `
-        SELECT routines.*
-        WHERE routines.id=$1;
-        CASE WHEN ra."routineID" is NULL THEN '[]' ::json
+        SELECT routines.*,
+        
+        CASE WHEN ra.routine_id is NULL THEN '[]' ::json
               ELSE
               JSON_AGG(
                 JSON_BUILD_OBJECT(
-                  'id'. activites.id,
+                  'id', activities.id,
                   'name', activities.name,
                   'description', activities.description,
                   'count', ra.count,
@@ -42,10 +42,11 @@ async function getRoutineById(id) {
               ) END AS activities
                 FROM routines
                 LEFT JOIN routine_activities AS ra
-                  ON routines.id = ra."routineID"
+                  ON routines.id = ra.routine_id
                 LEFT JOIN activities
-                  ON ra."activityId"= activities.id
-                GROUP BY routines.id, ra."routineID",
+                  ON ra.activity_id= activities.id
+                  WHERE routines.id=$1
+                GROUP BY routines.id, ra.routine_id
 
 
         `,
@@ -81,9 +82,7 @@ async function getRoutineWithoutActivities() {
 
 async function getAllRoutines() {
   try {
-    const {
-      rows,
-    } = await client.query(
+    const { rows } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
       CASE WHEN ra."routine_id" is NULL THEN'[]'::json
@@ -117,9 +116,7 @@ async function getAllRoutines() {
 
 async function getAllPublicRoutines() {
   try {
-    const {
-      rows,
-    } = await client.query(
+    const { rows } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
       CASE WHEN ra."routine_id" is NULL THEN'[]'::json
@@ -153,9 +150,7 @@ async function getAllPublicRoutines() {
 
 async function getAllRoutinesByUser(username) {
   try {
-    const {
-      rows,
-    } = await client.query(
+    const { rows } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
       CASE WHEN ra."routine_id" is NULL THEN'[]'::json
@@ -190,9 +185,7 @@ async function getAllRoutinesByUser(username) {
 
 async function getPublicRoutinesByUser(username) {
   try {
-    const {
-      rows,
-    } = await client.query(
+    const { rows } = await client.query(
       `
       SELECT routines.*, users.username AS "creatorName",
       CASE WHEN ra."routine_id" is NULL THEN'[]'::json
@@ -318,5 +311,5 @@ module.exports = {
   getAllRoutinesByUser,
   getRoutineById,
   destoryRoutine,
-  getAllPublicRoutines
+  getAllPublicRoutines,
 };
