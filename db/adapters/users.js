@@ -7,7 +7,7 @@ async function createUser({ username, password }) {
     } = await client.query(
       `
         INSERT INTO users(username, password) 
-        VALUES($1, $2) 
+        VALUES ($1, $2) 
         ON CONFLICT (username) DO NOTHING 
         RETURNING *;
       `,
@@ -47,7 +47,7 @@ async function getUserByUsername(username) {
       `
         SELECT *
         FROM users
-        WHERE username='$1';
+        WHERE username= $1;
       `,
       [username]
     );

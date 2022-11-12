@@ -7,6 +7,8 @@ import Routines from "./Routines";
 import SingleRoutine from "./SingleRoutine";
 import { NavBar } from "./NavBar";
 import NewRoutine from "./NewRoutine";
+import { Login } from "./Login";
+import { Register } from "./Register";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -20,6 +22,8 @@ function App() {
           <Route path="/routines" element={<Routines />} />
           <Route path="/routines/:id" element={<SingleRoutine />} />
           <Route path="/newroutine" element={<NewRoutine />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </div>
