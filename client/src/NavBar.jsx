@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { logOutUser } from "./helpers";
+import { useUsers } from "./hooks/useUsers";
 
 export function NavBar() {
   const navigate = useNavigate();
+  const { loggedIn, setLoggedIn, users } = useUsers();
   return (
     <div className="container">
       <h2>Fitness Tracker</h2>
@@ -16,6 +19,31 @@ export function NavBar() {
         <Link to="/newroutine" className="newroutine">
           Create a Routine
         </Link>
+
+        {!loggedIn ? (
+          <>
+            <Link to="/login" className="login">
+              Login
+            </Link>
+
+            <Link to="/Register" className="register">
+              Register
+            </Link>
+          </>
+        ) : null}
+        {loggedIn ? (
+          <>
+            <button
+              className="logout"
+              onClick={() => {
+                logOutUser();
+                setLoggedIn(false);
+
+                navigate("/");
+              }}
+            ></button>
+          </>
+        ) : null}
       </div>
     </div>
   );

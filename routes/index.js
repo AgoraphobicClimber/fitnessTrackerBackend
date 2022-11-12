@@ -7,16 +7,15 @@ apiRouter.get("/health", (req, res) => {
 });
 
 const usersRouter = require("./users");
-apiRouter.use('/users',usersRouter);
+apiRouter.use("/users", usersRouter);
 
-const routineRouter = require("./routines")
-apiRouter.use('/routines',routineRouter)
+const routineRouter = require("./routines");
+apiRouter.use("/routines", routineRouter);
 
-const activityRouter = require("./activities")
-apiRouter.use('/activities', activityRouter)
+const activityRouter = require("./activities");
+apiRouter.use("/activities", activityRouter);
 
 const routine_activitiesRouter = require("./routine_activities");
-apiRouter.use('/routine_activities', routine_activitiesRouter);
-
+apiRouter.use("/routine_activities", routine_activitiesRouter);
 
 module.exports = apiRouter;
