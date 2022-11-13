@@ -9,6 +9,7 @@ import { NavBar } from "./NavBar";
 import NewRoutine from "./NewRoutine";
 import { Login } from "./Login";
 import { Register } from "./Register";
+import { User } from "./User";
 
 function App() {
   const [count, setCount] = useState(0);

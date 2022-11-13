@@ -61,3 +61,14 @@ export async function logOutUser() {
   const result = await response.json();
   return result;
 }
+
+export async function deleteRoutine() {
+  const response = await fetch("routes/routine_activities/:routineActivityId", {
+    method: "Delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+}
