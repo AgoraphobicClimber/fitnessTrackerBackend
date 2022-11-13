@@ -10,7 +10,7 @@ function NewRoutine() {
         <input
           className="npIn"
           value={publicz}
-          onChange={(e) => setGoal(e.target.value)}
+          onChange={(e) => setPublicz(e.target.value)}
           type="checkbox"
           placeholder="Public?"
         />{" "}
@@ -30,6 +30,8 @@ function NewRoutine() {
         type="text"
         placeholder="Goal"
       />
+
+      <button type="submit" >Create</button>
     </form>
   );
 }

@@ -16,9 +16,7 @@ export function NavBar() {
         <Link to="/routines" className="routines">
           Routines
         </Link>
-        <Link to="/newroutine" className="newroutine">
-          Create a Routine
-        </Link>
+        
 
         {!loggedIn ? (
           <>
@@ -33,7 +31,14 @@ export function NavBar() {
         ) : null}
         {loggedIn ? (
           <>
-            <button
+          <Link to="/newroutine" className="newroutine">
+          Create a Routine
+         </Link>
+         
+         <Link to="/user" className="user">
+          Your Profile
+         </Link>
+            <button 
               className="logout"
               onClick={() => {
                 logOutUser();
@@ -41,7 +46,7 @@ export function NavBar() {
 
                 navigate("/");
               }}
-            ></button>
+            >Logout</button>
           </>
         ) : null}
       </div>
