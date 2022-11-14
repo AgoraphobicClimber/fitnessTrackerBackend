@@ -16,13 +16,13 @@ export function Login() {
         onSubmit={async (e) => {
           e.preventDefault();
           const result = await loginUser(username, password);
-          console.log(result);
+          console.log("login result", result);
 
           if (result.user) {
             setPassword("");
             setUsername("");
             setLoggedIn(true);
-            console.log("logged in", loggedIn);
+            console.log("logged in from login", loggedIn);
             navigate("/");
           } else {
             console.log("result was not success");

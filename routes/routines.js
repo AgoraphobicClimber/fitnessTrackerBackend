@@ -4,7 +4,7 @@ const {
   getAllPublicRoutines,
   createRoutine,
   updateRoutine,
-  destroyRoutine,
+  destoryRoutine,
 } = require("../db/adapters/routines");
 const { authRequired } = require("./utils");
 
@@ -42,7 +42,7 @@ routineRouter.post("/", authRequired, async (req, res, next) => {
   };
 
   try {
-    const newRoutine = Routine.createRoutine(routineData);
+    const newRoutine = createRoutine(routineData);
     if (newRoutine) {
       res.send({
         routine: newRoutine,
@@ -76,28 +76,36 @@ routineRouter.patch("/:routineId", authRequired, async (req, res, next) => {
   }
 
   try {
-    const originalRoutine = Routine.getRoutineById(routineId);
+    const originalRoutine = getRoutineById(routineId);
 
-    if (originalRoutine.creator_id === req.user.id) {
-      const updatedRoutine = Routine.updateRoutine(routineId, updateFields);
-      res.send({ routine: updatedRoutine });
-    } else {
-      next({
-        name: "UnauthorizedUserError",
-        message: "You cannot update a post that is not yours",
-      });
-    }
+    // if (originalRoutine.creator_id === req.user.id) {
+    const updatedRoutine = updateRoutine(
+      routineId,
+      updateFields.is_public,
+      updateFields.name,
+      updateFields.goal
+    );
+    res.send({ routine: updatedRoutine });
+    // } else {
+    //   next({
+    //     name: "UnauthorizedUserError",
+    //     message: "You cannot update a post that is not yours",
+    //   });
+    // }
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
 
 routineRouter.delete("/:routineId", authRequired, async (req, res, next) => {
+  const { routineId } = req.params;
+
   try {
-    const routine = await getRoutineById(req.params.routineId);
+    const routine = await getRoutineById(routineId);
 
     if (routine.creator_id === req.user.id) {
-      const deletedRoutine = Routine.destroyRoutine();
+      const deletedRoutine = destoryRoutine(routineId);
+      console.log("past destroy routine");
       res.send({ routine: deletedRoutine });
     } else {
       next(

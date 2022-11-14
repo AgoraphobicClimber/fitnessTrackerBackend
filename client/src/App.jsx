@@ -9,7 +9,7 @@ import { NavBar } from "./NavBar";
 import NewRoutine from "./NewRoutine";
 import { Login } from "./Login";
 import { Register } from "./Register";
-import { User } from "./User";
+import { EditRoutine } from "./EditRoutine";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -25,6 +25,7 @@ function App() {
           <Route path="/newroutine" element={<NewRoutine />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/editroutine/:id" element={<EditRoutine />} />
         </Route>
       </Routes>
     </div>
