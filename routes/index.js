@@ -1,6 +1,5 @@
 const express = require("express");
 const apiRouter = express.Router();
-const { getUserById } = require("../db/adapters/users");
 
 apiRouter.get("/health", (req, res) => {
   res.send("made man");

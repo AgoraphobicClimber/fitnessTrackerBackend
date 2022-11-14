@@ -289,7 +289,7 @@ async function destoryRoutine(routineId) {
       rows: [deletedRoutine],
     } = await client.query(
       `
-            DELETE FROM routine
+            DELETE FROM routines
             WHERE routines.id = $1
             RETURNING *
             `,

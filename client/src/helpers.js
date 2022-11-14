@@ -12,7 +12,7 @@ export async function fetchRoutine(id) {
 }
 
 export async function fetchMe() {
-  const response = await fetch("/api/users/me", {
+  const response = await fetch("/routes/users/me", {
     headers: {
       "Content-Type": "application.json",
     },
@@ -62,8 +62,8 @@ export async function logOutUser() {
   return result;
 }
 
-export async function deleteRoutine() {
-  const response = await fetch("routes/routine_activities/:routineActivityId", {
+export async function deleteRoutine(id) {
+  const response = await fetch(`/routes/routines/${id}`, {
     method: "Delete",
     headers: {
       "Content-Type": "application/json",
@@ -72,3 +72,36 @@ export async function deleteRoutine() {
   const result = await response.json();
   return result;
 }
+
+export const createRoutine = async (is_public, name, goal) => {
+  const response = await fetch("/routes/routines", {
+    method: "Post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      is_public,
+      name,
+      goal,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const editRoutine = async (id, is_public, name, goal) => {
+  const response = await fetch(`/routes/routines/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      is_public,
+      name,
+      goal,
+    }),
+  });
+  const result = await response.json();
+
+  return result;
+};

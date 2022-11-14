@@ -16,6 +16,7 @@ export default function UsersProvider({ children }) {
       } else {
         setUsers(users);
         setLoggedIn(true);
+        console.log("in else of use prov", loggedIn);
       }
     }
     getMe();
