@@ -9,6 +9,7 @@ export function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { loggedIn, setLoggedIn } = useUsers();
+  const [error, setError] = useState("");
 
   return (
     <div>
@@ -26,9 +27,15 @@ export function Login() {
             navigate("/");
           } else {
             console.log("result was not success");
+            setError("Invalid Credentials");
           }
         }}
       >
+        {error ? (
+          <>
+            <h3>{error}</h3>
+          </>
+        ) : null}
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -38,7 +45,7 @@ export function Login() {
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          type="text"
+          type="password"
           placeholder="Password"
         />
 

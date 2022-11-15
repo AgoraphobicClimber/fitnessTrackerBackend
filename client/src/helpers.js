@@ -5,6 +5,12 @@ async function fetchRoutines() {
 }
 export default fetchRoutines;
 
+export async function fetchActivities() {
+  const response = await fetch(`/routes/activities`),
+    result = await response.json();
+  return result;
+}
+
 export async function fetchRoutine(id) {
   const response = await fetch(`/routes/routines/${id}`),
     result = await response.json();
@@ -103,5 +109,20 @@ export const editRoutine = async (id, is_public, name, goal) => {
   });
   const result = await response.json();
 
+  return result;
+};
+
+export const createActivity = async (name, description) => {
+  const response = await fetch("/routes/activities", {
+    method: "Post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      description,
+    }),
+  });
+  const result = await response.json();
   return result;
 };

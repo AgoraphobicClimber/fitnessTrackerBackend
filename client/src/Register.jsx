@@ -9,24 +9,31 @@ export function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setLoggedIn, loggedIn } = useUsers();
+  const [error, setError] = useState("");
 
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
         const result = await registerUser(username, password);
-        console.log(result);
-        if (result) {
+        console.log("reg result", result);
+        if (result.message) {
+          console.log("register didnt work");
+          setError("Username already exists");
+        } else {
           setLoggedIn(true);
           setPassword("");
           setUsername("");
 
           navigate("/");
-        } else {
-          console.log("register didnt work");
         }
       }}
     >
+      {error ? (
+        <>
+          <h3>{error}</h3>
+        </>
+      ) : null}
       <input
         value={username}
         onChange={(e) => setUsername(e.target.value)}
@@ -36,7 +43,7 @@ export function Register() {
       <input
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        type="text"
+        type="password"
         placeholder="Password"
       />
 

@@ -40,6 +40,14 @@ function NewRoutine() {
         placeholder="Goal"
       />
 
+      <input
+        className="npIn"
+        value={goal}
+        onChange={(e) => setGoal(e.target.value)}
+        type="text"
+        placeholder="Goal"
+      />
+
       <button type="submit">Create</button>
     </form>
   );
