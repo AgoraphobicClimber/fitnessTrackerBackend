@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import fetchRoutine, { deleteRoutine } from "./helpers";
+import { fetchRoutine,  deleteRoutine, deleteRoutAct } from "./helpers";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "./hooks/useUsers";
+import styles from "./componentCss/SingleRoutine.module.css"
 
 export default function SingleRoutine() {
   const { id } = useParams();
@@ -12,37 +13,49 @@ export default function SingleRoutine() {
   const navigate = useNavigate();
   useEffect(() => {
     async function getRoutine() {
-      const routines = await fetchRoutine(id);
-      const [oneRoutine] = routines.filter((routine) => {
-        console.log("user is", users);
-        return routine.id == id;
-      });
-      setIndividualRoutine(oneRoutine);
+      const routine = await fetchRoutine(id);
+      setIndividualRoutine(routine);
+      console.log("routine", routine)
     }
     getRoutine();
   }, []);
 
   return (
-    <div className="singleRoutine">
+  <div>
+    <h1> Routine Description: </h1>
+    <div className={styles.singleroutine}>
       {console.log("ind routine", individualRoutine)}
-      <h4>{individualRoutine.name}</h4>
+      <div className={styles.header}>
+      <h4 className={styles.routname}>{individualRoutine.name}</h4>
       <h3> Goal: {individualRoutine.goal}</h3>
+      </div>
       <h3>
         {" "}
+        <div className={styles.acthead}>
         Activities:{" "}
+        </div>
         {individualRoutine.activities?.map((activity) => {
           return (
-            <div className="post" key={activity.id}>
-              <h4>{activity.name} </h4>
+            <div className={styles.container} key={activity.id}>
+              <h4 className={styles.actname}>{activity.name} </h4>
               <h4>{activity.description} </h4>
-              <h4>{activity.description} </h4>
-              <h4>{activity.count} </h4>
-              <h4>{activity.duration} </h4>
+              <h4>Count:{activity.count} </h4>
+              <h4>Duration:{activity.duration} </h4>
+              {/* {users.id === individualRoutine.creator_id ? (
+                <button
+                onClick={() => {
+                  deleteRoutAct(id);
+                  navigate("/myroutines");
+                }}
+                >
+                  Remove Activity
+                </button>
+              ):null} */}
             </div>
           );
         })}
       </h3>
-      <h3> Creator: {individualRoutine.creatorName}</h3>
+      <h3 className={styles.creator}> Creator: {individualRoutine.creatorName}</h3>
 
       {users.id === individualRoutine.creator_id ? (
         <>
@@ -72,5 +85,6 @@ export default function SingleRoutine() {
         Back to Routines{" "}
       </button>
     </div>
+  </div>
   );
 }

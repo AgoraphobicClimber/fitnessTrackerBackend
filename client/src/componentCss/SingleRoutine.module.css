@@ -1,0 +1,46 @@
+body {
+    background-image: url("fitnessfrontend.jpg");
+}
+
+.container {
+    box-sizing: border-box;
+    border: 1px solid white;
+    background-color: rgb(44, 40, 57);
+    box-shadow: 10px 5px 5px rgb(44, 46, 77);
+}
+
+.routname {
+    font-size: 40px;
+    margin: 10px;
+}
+
+.singleroutine {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header {
+    font-size: 30px;
+    margin: 5px;
+    margin-bottom: 30px;
+}
+
+.actname {
+ font-size: 30px;
+ padding: 5px;
+ background-color: rgb(0, 0, 0);
+}
+
+.creator {
+    font-size: 80px;
+    padding: 20px;
+    position: absolute;
+    left: 0;
+    margin-left: 200px;
+}
+
+.acthead{
+    font-size: 50px;
+    margin: 30px;
+}

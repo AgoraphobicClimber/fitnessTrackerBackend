@@ -4,13 +4,14 @@
 
 const client = require("../client");
 
-async function addActivityToRoutine({
+async function addActivityToRoutine(
   routine_id,
   activity_id,
   duration,
   count,
-}) {
+) {
   try {
+    console.log("try works", routine_id, activity_id, duration, count)
     const {
       rows: [routine_activity],
     } = await client.query(
@@ -21,6 +22,7 @@ async function addActivityToRoutine({
           `,
       [routine_id, activity_id, duration, count]
     );
+    console.log("query works", routine_activity)
 
     return routine_activity;
   } catch (error) {

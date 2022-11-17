@@ -27,7 +27,7 @@ async function getRoutineById(id) {
       rows: [routine],
     } = await client.query(
       `
-        SELECT routines.*,
+        SELECT routines.*, users.username AS "creatorName",
         
         CASE WHEN ra.routine_id is NULL THEN '[]' ::json
               ELSE
@@ -45,8 +45,10 @@ async function getRoutineById(id) {
                   ON routines.id = ra.routine_id
                 LEFT JOIN activities
                   ON ra.activity_id= activities.id
+                JOIN users
+                  ON routines.creator_id = users.id	
                   WHERE routines.id=$1
-                GROUP BY routines.id, ra.routine_id
+                GROUP BY routines.id, ra.routine_id, users.username
 
 
         `,

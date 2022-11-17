@@ -1,0 +1,28 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50px;
+}
+
+.setname {
+    width: 400px;
+    margin-top: 150px;
+    height: 50px;
+}
+
+.setgoal {
+    width: 400px;  
+    margin-bottom: 200px;
+    margin-top: 200px;
+    height: 50px;
+}
+
+.button {
+    height: 150px;
+    width: 150px;
+    position: absolute;
+    top: 350px;
+    right: 200px;
+
+}

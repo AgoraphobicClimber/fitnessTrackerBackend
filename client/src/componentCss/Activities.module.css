@@ -1,0 +1,41 @@
+.createheader {
+    font-size: 50px;
+    color: rgb(191, 118, 91);
+    padding: 30px;
+}
+
+.form {
+    border-radius: 50px;
+    margin: 5px;
+}
+
+.container {
+    margin:20px;
+}
+
+.button {
+    margin-left: 10px;
+}
+
+.input {
+    margin-left: 3px;
+}
+
+.actcontainer {
+    width: 1000px;
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: baseline;
+    margin-top: 20px;
+    background: rgb(196, 196, 196);
+
+}
+
+.activity {
+    width: 120px;
+    height: 120px;
+    font-size: 25px;
+    color: black;
+}

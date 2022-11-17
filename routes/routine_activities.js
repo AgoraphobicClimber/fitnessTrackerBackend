@@ -1,16 +1,13 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
+
 const routine_activitiesRouter = require("express").Router();
-const { Activities } = require("../db/adapters/activities");
-const { Routine } = require("../db/adapters/routines");
+
 const {
   RoutineActivities,
   getRoutineActivityById,
-  destoryRoutineAct
+  destoryRoutineAct,
+  addActivityToRoutine
 } = require("../db/adapters/routine_activities");
-const { JWT_SECRET } = process.env;
-const { authRequired } = require("./utils");
-const SALT_ROUNDS = 10;
+
 
 routine_activitiesRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -26,21 +23,23 @@ routine_activitiesRouter.get("/:id", async (req, res, next) => {
 routine_activitiesRouter.post(
   "/:routineid/activities",
   async (req, res, next) => {
-    const { activityId, count, duration } = req.body;
-    const { routineId } = req.params;
+    const { activity_id, count, duration } = req.body;
+    const { routineid } = req.params;
     console.log("test");
-    res.send(activityId, count, duration, routineId);
 
     try {
-      const newRoutineActivity = RoutineActivities.addActivityToRoutine(routineId, activityId, count, duration);
-      if ((routineId)&& (activityId)) {
+      console.log("line 30", routineid, activity_id, duration, count)
+      const newRoutineActivity = addActivityToRoutine(routineid, activity_id, duration, count);
+      if ((routineid)&& (activity_id)) {
+        console.log("both ids", routineid, activity_id, duration, count)
         res.send({
           routineActivity: newRoutineActivity,
         });
       } else {
+        console.log("next")
         next({
           name: "error",
-          message: "can't create activity!",
+          message: "can't add activity!",
         });
       }
     } catch ({ name, message }) {

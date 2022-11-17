@@ -1,0 +1,25 @@
+.container {
+    width: 1000px;
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: baseline;
+    margin-top: 20px;
+    background: rgb(196, 196, 196);
+}
+
+.post {
+    color: black;
+    padding: 10px;
+    font-size: 23px;
+}
+
+.button {
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.name {
+    border-bottom: 2px solid black;
+}

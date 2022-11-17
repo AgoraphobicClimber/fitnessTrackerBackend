@@ -1,6 +1,7 @@
 import fetchRoutines from "./helpers";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import styles from "./componentCss/Routines.module.css"
 
 function Routines() {
   const navigate = useNavigate();
@@ -12,17 +13,17 @@ function Routines() {
     }
     getRoutines();
   }, []);
-
+console.log(routines)
   return (
     <div className="routines">
       <h1> Routines</h1>
-      <div className="container">
+      <div className={styles.container}>
         {routines.map((routine) => {
           return (
-            <div className="post" key={routine.id}>
-              <h4>{routine.name} </h4>
-              <h4>{routine.goal} </h4>
-              <button
+            <div className={styles.post} key={routine.id}>
+              <h4 className={styles.name}>{routine.name} </h4>
+              <h4>Goal: {routine.goal} </h4>
+              <button className={styles.button}
                 onClick={() => {
                   console.log("routine id is", routine.id);
                   navigate(`/routines/${routine.id}`);

@@ -79,6 +79,17 @@ export async function deleteRoutine(id) {
   return result;
 }
 
+export async function deleteRoutAct(id) {
+  const response = await fetch(`/routes/routine_activities/${id}`, {
+    method: "Delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+}
+
 export const createRoutine = async (is_public, name, goal) => {
   const response = await fetch("/routes/routines", {
     method: "Post",
@@ -126,3 +137,20 @@ export const createActivity = async (name, description) => {
   const result = await response.json();
   return result;
 };
+
+export const addActToRoutine = async (routine_id, activity_id, duration, count) => {
+  const response = await fetch(`/routes/routine_activities/${routine_id}/activities`, {
+    method: "Post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      routine_id,
+      activity_id,
+      duration,
+      count,
+    }),
+  });
+  const result = await response.json();
+  return result;
+}

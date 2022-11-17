@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoutine } from "./helpers";
 import { useNavigate } from "react-router-dom";
+import styles from "./componentCss/Createroutine.module.css"
 
 function NewRoutine() {
   const [name, setName] = useState("");
@@ -8,6 +9,7 @@ function NewRoutine() {
   const [publicz, setPublicz] = useState("");
   const navigate = useNavigate();
   return (
+    <div className={styles.form}>
     <form
       onSubmit={async (e) => {
         e.preventDefault();
@@ -17,7 +19,7 @@ function NewRoutine() {
     >
       <label>
         <input
-          className="npIn"
+          className={styles.setpublic}
           value={publicz}
           onChange={() => setPublicz(!publicz)}
           type="checkbox"
@@ -26,30 +28,23 @@ function NewRoutine() {
         Make Routine Public?
       </label>
       <input
-        className="npIn"
+        className={styles.setname}
         value={name}
         onChange={(e) => setName(e.target.value)}
         type="text"
         placeholder="Name"
       />
       <input
-        className="npIn"
+        className={styles.setgoal}
         value={goal}
         onChange={(e) => setGoal(e.target.value)}
         type="text"
         placeholder="Goal"
       />
 
-      <input
-        className="npIn"
-        value={goal}
-        onChange={(e) => setGoal(e.target.value)}
-        type="text"
-        placeholder="Goal"
-      />
-
-      <button type="submit">Create</button>
+      <button type="submit" className={styles.button}>Create</button>
     </form>
+  </div>
   );
 }
 export default NewRoutine;
