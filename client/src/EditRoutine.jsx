@@ -24,86 +24,78 @@ export function EditRoutine() {
   const navigate = useNavigate();
 
   return (
-  <div>
-     <h2> Edit Your Routine</h2>
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const result = await editRoutine(id, publicz, name, goal);
-        navigate("/routines");
-      }}
-    >
-      <label>
+    <div>
+      <h2> Edit Your Routine</h2>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const result = await editRoutine(id, publicz, name, goal);
+          navigate("/routines");
+        }}
+      >
+        <label>
+          <input
+            className="npIn"
+            value={publicz}
+            onChange={() => setPublicz(!publicz)}
+            type="checkbox"
+            placeholder="Public?"
+          />{" "}
+          Make Routine Public?
+        </label>
         <input
           className="npIn"
-          value={publicz}
-          onChange={() => setPublicz(!publicz)}
-          type="checkbox"
-          placeholder="Public?"
-        />{" "}
-        Make Routine Public?
-      </label>
-      <input
-        className="npIn"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        type="text"
-        placeholder="Name"
-      />
-      <input
-        className="npIn"
-        value={goal}
-        onChange={(e) => setGoal(e.target.value)}
-        type="text"
-        placeholder="Goal"
-      />
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          type="text"
+          placeholder="Name"
+        />
+        <input
+          className="npIn"
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
+          type="text"
+          placeholder="Goal"
+        />
 
-      <button type="submit">Create</button>
-    </form>
-    <h2> Add an Activity</h2>
-  <form
-    onSubmit={async (e) => {
-      e.preventDefault();
-      const actId = e.target[0].value
-      console.log({actId,id,dur,count})
+        <button type="submit">Create</button>
+      </form>
+      <h2> Add an Activity</h2>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const actId = e.target[0].value;
+          console.log({ actId, id, dur, count });
 
-      
-   const result = await addActToRoutine(id, actId, dur, count);
-      navigate(`/myroutines`);
-    }}
-  >
-    <select>
-    {activities?.map((activity) => {
-      return (
-       
-        <option value={activity.id}>
-          {activity.name}
-        </option>
-     
-       );
-      })}
-    </select>
+          const result = await addActToRoutine(id, actId, dur, count);
+          navigate(`/routines/${id}`);
+        }}
+      >
+        <select>
+          {activities?.map((activity) => {
+            return <option value={activity.id}>{activity.name}</option>;
+          })}
+        </select>
 
-    <label>
-    </label>
+        <label></label>
 
-    <input
-      className="npIn"
-      value={dur}
-      onChange={(e) => setDur(e.target.value)}
-      type="text"
-      placeholder="Duration"
-    />
-    <input 
-    className="npIn"
-    value={count}
-    onChange={(e) => setCount(e.target.value)}
-    type="text"
-    placeholder="Count"
-    />
+        <input
+          className="npIn"
+          value={dur}
+          onChange={(e) => setDur(e.target.value)}
+          type="text"
+          placeholder="Duration"
+        />
+        <input
+          className="npIn"
+          value={count}
+          onChange={(e) => setCount(e.target.value)}
+          type="text"
+          placeholder="Count"
+        />
 
-    <button type="submit">Add</button>
-  </form>
-  </div>
-);
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  );
 }

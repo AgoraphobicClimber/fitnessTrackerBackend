@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { logOutUser } from "./helpers";
 import { useUsers } from "./hooks/useUsers";
-import styles from "./componentCss/Navbar.module.css"
+import styles from "./componentCss/Navbar.module.css";
 
 export function NavBar() {
   const navigate = useNavigate();
   const { loggedIn, setLoggedIn, users } = useUsers();
   return (
     <div className={styles.container}>
-      <div className="links">
+      <div className={styles.links}>
         <Link className={styles.link} to="/">
           Home
         </Link>

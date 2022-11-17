@@ -1,13 +1,11 @@
-
 const routine_activitiesRouter = require("express").Router();
 
 const {
   RoutineActivities,
   getRoutineActivityById,
   destoryRoutineAct,
-  addActivityToRoutine
+  addActivityToRoutine,
 } = require("../db/adapters/routine_activities");
-
 
 routine_activitiesRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -28,15 +26,20 @@ routine_activitiesRouter.post(
     console.log("test");
 
     try {
-      console.log("line 30", routineid, activity_id, duration, count)
-      const newRoutineActivity = addActivityToRoutine(routineid, activity_id, duration, count);
-      if ((routineid)&& (activity_id)) {
-        console.log("both ids", routineid, activity_id, duration, count)
+      console.log("line 30", routineid, activity_id, duration, count);
+      const newRoutineActivity = addActivityToRoutine(
+        routineid,
+        activity_id,
+        duration,
+        count
+      );
+      if (routineid && activity_id) {
+        console.log("both ids", routineid, activity_id, duration, count);
         res.send({
           routineActivity: newRoutineActivity,
         });
       } else {
-        console.log("next")
+        console.log("next");
         next({
           name: "error",
           message: "can't add activity!",
@@ -48,33 +51,59 @@ routine_activitiesRouter.post(
   }
 );
 
+// routine_activitiesRouter.delete(
+//   "/:routineActivityId",
+//   async (req, res, next) => {
+//     try {
+//       const routineact = getRoutineActivityById(req.params.routineActivityId);
+
+//       if (routineact.routine_id === req.user.id) {
+//         const deletedRa = destoryRoutineAct();
+//         res.send( { RoutineActivities: deletedRa } )
+//       } else {
+//         next(
+//           RoutineActivities
+//             ? {
+//                 name: "UnauthorizedUserError",
+//                 message: "You cannot delete a routine which is not yours",
+//               }
+//             : {
+//                 name: "RoutineNotFoundError",
+//                 message: "That routine does not exist",
+//               }
+//         );
+//       }
+//       }catch ({ name, message }) {
+//         next({ name, message });
+//       }
+//     }
+// )
+
 routine_activitiesRouter.delete(
-  "/:routineActivityId",
+  "/:routineid/:activityid",
   async (req, res, next) => {
     try {
-      const routineact = getRoutineActivityById(req.params.routineActivityId);
+      const deletedRa = destoryRoutineAct(
+        req.params.routineid,
+        req.params.activityid
+      );
+      res.send({ RoutineActivities: deletedRa });
 
-      if (routineact.routine_id === req.user.id) {
-        const deletedRa = destoryRoutineAct();
-        res.send( { RoutineActivities: deletedRa } )
-      } else {
-        next(
-          RoutineActivities
-            ? {
-                name: "UnauthorizedUserError",
-                message: "You cannot delete a routine which is not yours",
-              }
-            : {
-                name: "RoutineNotFoundError",
-                message: "That routine does not exist",
-              }
-        );
-      }
-      }catch ({ name, message }) {
-        next({ name, message });
-      }
+      next(
+        RoutineActivities
+          ? {
+              name: "UnauthorizedUserError",
+              message: "You cannot delete a routine which is not yours",
+            }
+          : {
+              name: "RoutineNotFoundError",
+              message: "That routine does not exist",
+            }
+      );
+    } catch ({ name, message }) {
+      next({ name, message });
     }
-)
-
+  }
+);
 
 module.exports = routine_activitiesRouter;
