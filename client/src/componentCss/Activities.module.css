@@ -29,7 +29,7 @@
     flex-wrap: wrap;
     align-content: baseline;
     margin-top: 20px;
-    background: rgb(196, 196, 196);
+    background: rgb(196, 196, 196)
 
 }
 
@@ -37,5 +37,12 @@
     width: 120px;
     height: 120px;
     font-size: 25px;
-    color: black;
+    padding: 10px;
+    font-size: 23px;
+    box-sizing: border-box;
+    border: 1px solid white;
+    background-color: rgb(44, 40, 57);
+    box-shadow: 10px 5px 5px rgb(44, 46, 77);
+    color: white;
+    margin: 10px;
 }

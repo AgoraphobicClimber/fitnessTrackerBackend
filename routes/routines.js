@@ -5,6 +5,7 @@ const {
   createRoutine,
   updateRoutine,
   destoryRoutine,
+  getAllRoutines
 } = require("../db/adapters/routines");
 const { authRequired } = require("./utils");
 
@@ -18,6 +19,14 @@ routineRouter.get("/", async (req, res, next) => {
     next(error);
   }
 });
+routineRouter.get("/myroutines",async (req,res,next)=>{
+  try {
+    const allRoutines = await getAllRoutines()
+    res.send(allRoutines)
+  } catch (error) {
+    next(error)
+  }
+})
 
 routineRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -124,5 +133,8 @@ routineRouter.delete("/:routineId", authRequired, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+
+
 
 module.exports = routineRouter;

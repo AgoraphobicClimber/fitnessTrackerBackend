@@ -6,10 +6,11 @@ import styles from "./componentCss/Createroutine.module.css";
 function NewRoutine() {
   const [name, setName] = useState("");
   const [goal, setGoal] = useState("");
-  const [publicz, setPublicz] = useState("");
+  const [publicz, setPublicz] = useState(false);
   const navigate = useNavigate();
   return (
     <div className={styles.form}>
+      <h2 className={styles.header}> Make a Routine!</h2>
       <form
         onSubmit={async (e) => {
           e.preventDefault();

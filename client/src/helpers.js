@@ -165,3 +165,10 @@ export const addActToRoutine = async (
   const result = await response.json();
   return result;
 };
+
+export async function fetchAllRoutines() {
+  const response = await fetch(`/routes/routines/myroutines`),
+    result = await response.json();
+  return result;
+}
+

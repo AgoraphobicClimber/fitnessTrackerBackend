@@ -106,7 +106,6 @@ async function getAllRoutines() {
       JOIN users
         ON routines."creator_id" = users.id	
       GROUP BY routines.id, ra."routine_id", users.username
-              
             `
     );
 

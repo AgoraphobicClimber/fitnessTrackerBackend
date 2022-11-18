@@ -40,7 +40,7 @@ export default function SingleRoutine() {
                 <h4>Count:{activity.count} </h4>
                 <h4>Duration:{activity.duration} </h4>
                 {users.id === individualRoutine.creator_id ? (
-                  <button
+                  <button className={styles.button}
                     onClick={() => {
                       deleteRoutAct(individualRoutine.id, activity.id);
                       navigate(`/myroutines`);
@@ -60,14 +60,14 @@ export default function SingleRoutine() {
 
         {users.id === individualRoutine.creator_id ? (
           <>
-            <button
+            <button className={styles.button}
               onClick={() => {
                 navigate(`/editroutine/${id}`);
               }}
             >
               Edit Routine{" "}
             </button>
-            <button
+            <button className={styles.button}
               onClick={() => {
                 deleteRoutine(id);
                 navigate("/routines");
@@ -78,7 +78,7 @@ export default function SingleRoutine() {
           </>
         ) : null}
 
-        <button
+        <button className={styles.button}
           onClick={() => {
             navigate(`/routines`);
           }}

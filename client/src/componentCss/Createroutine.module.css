@@ -3,18 +3,18 @@
     flex-direction: column;
     flex-wrap: wrap;
     width: 50px;
+    margin-right: 400px;
+    margin-top: 150px;
 }
 
 .setname {
     width: 400px;
-    margin-top: 150px;
     height: 50px;
 }
 
 .setgoal {
     width: 400px;  
     margin-bottom: 200px;
-    margin-top: 200px;
     height: 50px;
 }
 
@@ -22,7 +22,13 @@
     height: 150px;
     width: 150px;
     position: absolute;
-    top: 350px;
-    right: 200px;
+    top: 370px;
+    right: 550px;
+}
 
+.header {
+    position: absolute;
+    top: 100px;
+    left: 800px;
+    font-size: 50px;
 }
