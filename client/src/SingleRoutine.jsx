@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchRoutine, deleteRoutine, deleteRoutAct } from "./helpers";
+import {
+  fetchRoutine,
+  deleteRoutine,
+  deleteRoutAct,
+  editRoutineActivity,
+} from "./helpers";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "./hooks/useUsers";
@@ -8,7 +13,9 @@ import styles from "./componentCss/SingleRoutine.module.css";
 export default function SingleRoutine() {
   const { id } = useParams();
   const { users } = useUsers();
-
+  const [open, setOpen] = useState(false);
+  const [count, setCount] = useState("");
+  const [dur, setDur] = useState("");
   const [individualRoutine, setIndividualRoutine] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -40,14 +47,60 @@ export default function SingleRoutine() {
                 <h4>Count:{activity.count} </h4>
                 <h4>Duration:{activity.duration} </h4>
                 {users.id === individualRoutine.creator_id ? (
-                  <button className={styles.button}
-                    onClick={() => {
-                      deleteRoutAct(individualRoutine.id, activity.id);
-                      navigate(`/myroutines`);
-                    }}
-                  >
-                    Remove Activity
-                  </button>
+                  <>
+                    <button
+                      className={styles.button}
+                      onClick={() => {
+                        setOpen(!open);
+                      }}
+                    >
+                      Edit Count/Duration
+                    </button>
+                    {open === true ? (
+                      <>
+                        <form
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+
+                            const result = await editRoutineActivity(
+                              id,
+                              activity.id,
+                              count,
+                              dur
+                            );
+                            navigate(`/myroutines`);
+                          }}
+                        >
+                          <input
+                            className="npIn"
+                            value={count}
+                            onChange={(e) => setCount(e.target.value)}
+                            type="text"
+                            placeholder="Count"
+                          />
+                          <input
+                            className="npIn"
+                            value={dur}
+                            onChange={(e) => setDur(e.target.value)}
+                            type="text"
+                            placeholder="Duration"
+                          />
+
+                          <button type="submit">Update</button>
+                        </form>
+                      </>
+                    ) : null}
+
+                    <button
+                      className={styles.button}
+                      onClick={() => {
+                        deleteRoutAct(individualRoutine.id, activity.id);
+                        navigate(`/myroutines`);
+                      }}
+                    >
+                      Remove Activity
+                    </button>
+                  </>
                 ) : null}
               </div>
             );
@@ -60,14 +113,16 @@ export default function SingleRoutine() {
 
         {users.id === individualRoutine.creator_id ? (
           <>
-            <button className={styles.button}
+            <button
+              className={styles.button}
               onClick={() => {
                 navigate(`/editroutine/${id}`);
               }}
             >
               Edit Routine{" "}
             </button>
-            <button className={styles.button}
+            <button
+              className={styles.button}
               onClick={() => {
                 deleteRoutine(id);
                 navigate("/routines");
@@ -78,7 +133,8 @@ export default function SingleRoutine() {
           </>
         ) : null}
 
-        <button className={styles.button}
+        <button
+          className={styles.button}
           onClick={() => {
             navigate(`/routines`);
           }}

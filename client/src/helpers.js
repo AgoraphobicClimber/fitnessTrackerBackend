@@ -172,3 +172,28 @@ export async function fetchAllRoutines() {
   return result;
 }
 
+export const editRoutineActivity = async (
+  routineId,
+  activityId,
+  count,
+  duration
+) => {
+  const response = await fetch(
+    `/routes/routine_activities/${routineId}/${activityId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        routineId,
+        activityId,
+        count,
+        duration,
+      }),
+    }
+  );
+  const result = await response.json();
+
+  return result;
+};

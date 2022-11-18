@@ -53,18 +53,18 @@ async function getRoutineActivityById(routine_id, activity_id) {
 // Find the routine_activity with id equal to the passed in routineActivityId
 // Update the count or duration as necessary
 
-async function updateRoutineActivity(routineActivityId, count, duration) {
+async function updateRoutineActivity(routine_id, activity_id, count, duration) {
   try {
     const {
       rows: [updatedRoutAct],
     } = await client.query(
       `
       UPDATE routine_activities
-      SET count = $2, duration = $3
-      WHERE routine_activities.id = $1
+      SET count = $3, duration = $4
+      WHERE routine_activities.routine_id = $1 AND routine_activities.activity_id = $2
       RETURNING count, duration  
           `,
-      [routineId, isPublic, name, goal]
+      [routine_id, activity_id, count, duration]
     );
     return updatedRoutAct;
   } catch (error) {
@@ -130,4 +130,5 @@ module.exports = {
   getRoutineActivitiesByRoutine,
   getRoutineActivityById,
   destoryRoutineAct,
+  updateRoutineActivity,
 };

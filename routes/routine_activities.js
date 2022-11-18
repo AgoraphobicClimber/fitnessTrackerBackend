@@ -5,6 +5,7 @@ const {
   getRoutineActivityById,
   destoryRoutineAct,
   addActivityToRoutine,
+  updateRoutineActivity,
 } = require("../db/adapters/routine_activities");
 
 routine_activitiesRouter.get("/:id", async (req, res, next) => {
@@ -100,6 +101,36 @@ routine_activitiesRouter.delete(
               message: "That routine does not exist",
             }
       );
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  }
+);
+
+routine_activitiesRouter.patch(
+  "/:routineId/:activityId",
+  async (req, res, next) => {
+    const { routineId } = req.params;
+    const { activityId } = req.params;
+    const { count, duration } = req.body;
+    const updateFields = {};
+
+    if (count) {
+      updateFields.count = count;
+    }
+
+    if (duration) {
+      updateFields.duration = duration;
+    }
+
+    try {
+      const updatedRoutAct = updateRoutineActivity(
+        routineId,
+        activityId,
+        updateFields.count,
+        updateFields.duration
+      );
+      res.send({ routAct: updatedRoutAct });
     } catch ({ name, message }) {
       next({ name, message });
     }
