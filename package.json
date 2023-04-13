@@ -7,7 +7,7 @@
     "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
     "start:dev": "(npm run dev --prefix client) & nodemon server.js",
-    "build": "npm install --prefix client && npm run build --prefix client ",
+    "build": "npm install --production=false --prefix client && npm run build --prefix client ",
     "start": "nodemon ./server.js"
   },
   "keywords": [],
@@ -23,5 +23,14 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccraft4444/fitnessTrackerBackend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ccraft4444/fitnessTrackerBackend/issues"
+  },
+  "homepage": "https://github.com/ccraft4444/fitnessTrackerBackend#readme"
 }
